@@ -72,6 +72,14 @@ class MacenkoNormalizer:
             
         # Compute concentrations of the current image
         Y = -np.log10((img_reshaped.astype(np.float64) + 1) / 256.0)
+        
+        # --- LOGICA AVANZATA: Maschera HSV (Saturazione + Luminosità) ---
+        hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
+        s_channel = hsv[:, :, 1].reshape(-1)  
+        v_channel = hsv[:, :, 2].reshape(-1)  
+        is_background = (s_channel < 5) & (v_channel > 235)
+        # ----------------------------------------------------------------
+
         C = np.linalg.lstsq(HE, Y.T, rcond=None)[0]
         
         # Normalize concentrations against the reference maximums
@@ -80,8 +88,13 @@ class MacenkoNormalizer:
         
         # Reconstruct the image back to RGB space
         Inorm = np.multiply(256, np.exp(-self.HERef.dot(C)))
-        return np.clip(Inorm, 0, 255).astype(np.uint8).reshape((h, w, c))
-
+        img_normalized = np.clip(Inorm.T, 0, 255).astype(np.uint8)
+        
+        # --- STACCO NETTO PER IL RANDOM FOREST ---
+        img_normalized[is_background] = img_reshaped[is_background]
+        # -----------------------------------------
+        
+        return img_normalized.reshape((h, w, c))
 
 class HistologyPreprocessor:
     def __init__(self, color_normalizer=None):
