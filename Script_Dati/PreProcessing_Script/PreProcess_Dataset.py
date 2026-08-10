@@ -3,13 +3,13 @@ import cv2
 import numpy as np
 import shutil  # <--- NUOVA IMPORTAZIONE
 from tqdm import tqdm
-from PreProcessing import MacenkoNormalizer, HistologyPreprocessor
+from PreProcessing import VahadaneNormalizer, HistologyPreprocessor
 
 DATASET_DIR = "E:\\MarcoCariccia\\Dataset\\Dataset_Tiles"
 
 def process_dataset(reference_image_path):
-    # 1. Inizializzazione (con i parametri alpha e beta ottimizzati)
-    normalizer = MacenkoNormalizer(alpha=5, beta=0.05)
+    # 1. Inizializzazione (con il parametro beta ottimizzato)
+    normalizer = VahadaneNormalizer(beta=0.05)
     
     ref_img = cv2.imread(reference_image_path)
     ref_img = cv2.cvtColor(ref_img, cv2.COLOR_BGR2RGB)

@@ -37,6 +37,8 @@ def monte_carlo_split():
         
     nomi_wsi = list(profili.keys())
     n_total = len(nomi_wsi)
+
+    totale_generale_tutti_i_pixel = sum(sum(wsi_data.values()) for wsi_data in profili.values())
     
     best_score = float('inf')
     best_split = None
@@ -69,16 +71,18 @@ def monte_carlo_split():
         # 4. PENALITÀ
         penalita = 0
         if np.any(dist_val < 0.005) or np.any(dist_test < 0.005):
-            penalita = 1000
+            penalita += 1000  # Modificato in +=
+            
+        # ---> AGGIUNGI QUI: Controllo del volume del Train set <---
+        totale_pixel_train = sum(sum(profili[w].values()) for w in train_wsi)
+        vol_train = totale_pixel_train / totale_generale_tutti_i_pixel
+        
+        # Tolleranza: il Train deve contenere tra il 65% e il 75% dei pixel totali
+        if vol_train < 0.65 or vol_train > 0.75:
+            penalita += 1000
             
         score = diff_train_val + diff_train_test + penalita
         
-        # Salvataggio del record
-        if score < best_score:
-            best_score = score
-            best_split = (train_wsi, val_wsi, test_wsi)
-            best_distributions = (dist_train, dist_val, dist_test)
-
     # Estrazione dei vincitori
     train, val, test = best_split
     d_train, d_val, d_test = best_distributions

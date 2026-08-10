@@ -11,17 +11,17 @@ import java.util.concurrent.atomic.AtomicInteger
 // 1. CONFIGURAZIONE
 // ==============================================================================
 String pathOutput = "E:/MarcoCariccia/Dataset/Dataset_Tiles"
-int outputTileSize = 256       
-double downsample = 2.0        // Zoom a 20x
+int outputTileSize = 512       
+double downsample = 2.0        // Zoom a 40x, gold standard per cervical CAD
 
 int baseSize = (int)(outputTileSize * downsample) 
-int step = baseSize 
+int step = (int)(baseSize * 0.75) 
 
 // ==============================================================================
 // 2. MAPPATURA CLASSI E COLORI
 // ==============================================================================
 def classMapping = [
-    "Tissue"             : [id: 255, color: ColorTools.WHITE], // Tessuto Sano (Bianco)
+    "Tissue"             : [id: 255, color: ColorTools.BLACK], // Tessuto sconosciuto (BLACK)
     "CIN1"               : [id: 1, color: ColorTools.makeRGB(255, 192, 203)], 
     "Endocervical glands": [id: 2, color: ColorTools.GREEN],                  
     "HSIL"               : [id: 3, color: ColorTools.BLUE],                   
@@ -86,7 +86,7 @@ if (targetAnnotations.isEmpty()) {
 // 5. SETUP GESTIONE FILE E FORZATURA MASCHERA
 // ==============================================================================
 def labelBuilder = new LabeledImageServer.Builder(imageData)
-    .backgroundLabel(0, ColorTools.BLACK) 
+    .backgroundLabel(0, ColorTools.WHITE) 
     .downsample(downsample)
     .multichannelOutput(false) 
     
@@ -132,16 +132,17 @@ requests.parallelStream().forEach { req ->
     try { maskImg = labelServer.readBufferedImage(region) } catch (Exception e) { return }
     
     int[] maskPixels = maskImg.getRGB(0, 0, outputTileSize, outputTileSize, null, 0, outputTileSize)
-    boolean hasPathology = false
-    
-    for (int p : maskPixels) {
-        if (p != blackColor && p != whiteColor) {
-            hasPathology = true
-            break 
+        int pixelUtili = 0
+        
+        for (int p : maskPixels) {
+            if (p != blackColor && p != whiteColor) {
+                pixelUtili++
+            }
         }
-    }
-    
-    if (!hasPathology) return 
+        
+        double percentualeTessuto = (double) pixelUtili / maskPixels.length
+        
+        if (percentualeTessuto < 0.05) return
     
     try {
         BufferedImage rgbImg = server.readBufferedImage(region)
