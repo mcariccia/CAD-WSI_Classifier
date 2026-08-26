@@ -7,97 +7,101 @@ from tqdm import tqdm
 # ==========================================
 # CONFIGURAZIONE
 # ==========================================
-input_file = "profilo_wsi.json"
-NUM_ITERAZIONI = 1000000  # 1 milione è un ottimo compromesso tra velocità e precisione
-RATIOS = [0.70, 0.15, 0.15] 
+INPUT_FILE = "profilo_wsi.json"
+NUM_ITERAZIONI = 2000000  # 2 milioni di iterazioni
+RATIOS = [0.70, 0.15, 0.15]
+CLASSI_NOMI = ["Sfondo", "CIN1", "Endocervical_glands", "HSIL", "Normal_Mucosa", "Stroma"]
 
-# FONDAMENTALE: Fissa i seed per la riproducibilità scientifica!
-# Se un domani ri-esegui lo script, otterrai lo stesso identico split perfetto.
+# Fissa i seed per la riproducibilità scientifica
 random.seed(42)
 np.random.seed(42)
 
-def calcola_distribuzione(lista_wsi, profili_completi):
-    totale_pixel = 0
-    # Usiamo solo le chiavi da 0 a 5, in linea con il JSON appena creato
-    conteggi = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0}
-    
+def calcola_pixel_assoluti(lista_wsi, profili_completi):
+    """Calcola la somma bruta dei pixel per ogni classe in base alla lista di WSI fornita."""
+    conteggi = np.zeros(6, dtype=np.float64)
     for nome in lista_wsi:
         dati = profili_completi[nome]
         for k, v in dati.items():
             conteggi[int(k)] += v
-            totale_pixel += v
-            
-    if totale_pixel == 0: return np.zeros(6)
-    return np.array([conteggi[i] for i in range(6)]) / totale_pixel
+    return conteggi
 
 def monte_carlo_split():
-    # Carica i dati estratti dal primo script
-    with open(input_file, "r") as f:
+    with open(INPUT_FILE, "r") as f:
         profili = json.load(f)
         
     nomi_wsi = list(profili.keys())
     n_total = len(nomi_wsi)
 
-    totale_generale_tutti_i_pixel = sum(sum(wsi_data.values()) for wsi_data in profili.values())
+    # Pre-calcoliamo i pixel totali dell'intero dataset per ogni classe
+    totale_globale_per_classe = calcola_pixel_assoluti(nomi_wsi, profili)
+    
+    # Sostituiamo eventuali zeri con 1 per evitare divisioni per zero (safe-check)
+    totale_globale_per_classe = np.where(totale_globale_per_classe == 0, 1, totale_globale_per_classe)
+    
+    # Suddivisione fissa a livello di pazienti/WSI (28 Train, 6 Val, 6 Test)
+    n_train = int(n_total * RATIOS[0])
+    n_val = int(n_total * RATIOS[1])
     
     best_score = float('inf')
     best_split = None
-    best_distributions = None
+    best_ratios = None
     
     print(f"Avvio simulazione Monte Carlo su {n_total} WSI per {NUM_ITERAZIONI:,} iterazioni...")
     
-    # tqdm crea una barra di caricamento per farti vedere la velocità e il tempo rimanente
     for i in tqdm(range(NUM_ITERAZIONI), desc="Calcolo Combinazioni"):
         
-        # 1. Mischio a caso l'ordine dei pazienti
+        # 1. Mischio a caso
         random.shuffle(nomi_wsi)
         
         # 2. Taglio la lista
-        n_train = int(n_total * RATIOS[0])
-        n_val = int(n_total * RATIOS[1])
-        
         train_wsi = nomi_wsi[:n_train]
         val_wsi = nomi_wsi[n_train:n_train+n_val]
         test_wsi = nomi_wsi[n_train+n_val:]
         
-        dist_train = calcola_distribuzione(train_wsi, profili)
-        dist_val = calcola_distribuzione(val_wsi, profili)
-        dist_test = calcola_distribuzione(test_wsi, profili)
+        # 3. Calcolo pixel assoluti per split
+        pixel_train = calcola_pixel_assoluti(train_wsi, profili)
+        pixel_val = calcola_pixel_assoluti(val_wsi, profili)
+        pixel_test = calcola_pixel_assoluti(test_wsi, profili)
         
-        # 3. METRICA DI ERRORE (Mean Squared Error)
-        diff_train_val = np.sum((dist_train - dist_val) ** 2)
-        diff_train_test = np.sum((dist_train - dist_test) ** 2)
+        # 4. Calcolo la % di ogni classe finita nei tre set (Target: 70 / 15 / 15)
+        ratio_train = pixel_train / totale_globale_per_classe
+        ratio_val = pixel_val / totale_globale_per_classe
+        ratio_test = pixel_test / totale_globale_per_classe
         
-        # 4. PENALITÀ
+        # 5. METRICA DI ERRORE (Mean Squared Error)
+        errore_train = np.sum((ratio_train - RATIOS[0]) ** 2)
+        errore_val = np.sum((ratio_val - RATIOS[1]) ** 2)
+        errore_test = np.sum((ratio_test - RATIOS[2]) ** 2)
+        
+        # 6. PENALITÀ ESTREME
         penalita = 0
-        if np.any(dist_val < 0.005) or np.any(dist_test < 0.005):
-            penalita += 1000  # Modificato in +=
-            
-        # ---> AGGIUNGI QUI: Controllo del volume del Train set <---
-        totale_pixel_train = sum(sum(profili[w].values()) for w in train_wsi)
-        vol_train = totale_pixel_train / totale_generale_tutti_i_pixel
-        
-        # Tolleranza: il Train deve contenere tra il 65% e il 75% dei pixel totali
-        if vol_train < 0.65 or vol_train > 0.75:
+        # Vogliamo che almeno il 2% (0.02) dei pixel di ogni classe patologica finisca in Val e Test
+        # L'indice [1:] serve a escludere lo Sfondo (classe 0) da questa severa restrizione
+        if np.any(ratio_val[1:] < 0.02) or np.any(ratio_test[1:] < 0.02):
             penalita += 1000
             
-        score = diff_train_val + diff_train_test + penalita
+        score = errore_train + errore_val + errore_test + penalita
         
-    # Estrazione dei vincitori
+        # 7. AGGIORNAMENTO DEL RECORD
+        if score < best_score:
+            best_score = score
+            best_split = (train_wsi.copy(), val_wsi.copy(), test_wsi.copy())
+            best_ratios = (ratio_train, ratio_val, ratio_test)
+        
+    # Estrazione dei vincitori a fine ciclo
     train, val, test = best_split
-    d_train, d_val, d_test = best_distributions
+    rt, rv, rts = best_ratios
     
-    print("\n" + "="*60)
-    print("🏆 MIGLIOR SPLIT TROVATO!")
-    print("="*60)
-    print(f"Punteggio di Errore (MSE + Penalità): {best_score:.6f}")
+    print("\n" + "="*75)
+    print("🏆 MIGLIOR SPLIT STRATIFICATO TROVATO!")
+    print("="*75)
+    print(f"Punteggio di Errore (Basso = Migliore): {best_score:.6f}")
     print(f"Train WSI: {len(train)} | Val WSI: {len(val)} | Test WSI: {len(test)}")
-    print("-" * 60)
-    print(f"{'CLASSE':<20} {'TRAIN %':<12} {'VAL %':<12} {'TEST %':<12}")
+    print("-" * 75)
+    print(f"{'CLASSE':<20} {'TRAIN (Target 70%)':<22} {'VAL (Target 15%)':<22} {'TEST (Target 15%)'}")
     
-    classi_nomi = ["Sfondo", "CIN1", "Endocervical_glands", "HSIL", "Normal_Mucosa", "Stroma"]
     for i in range(6):
-        print(f"{classi_nomi[i]:<20} {d_train[i]*100:>7.2f}%    {d_val[i]*100:>7.2f}%    {d_test[i]*100:>7.2f}%")
+        print(f"{CLASSI_NOMI[i]:<20} {rt[i]*100:>7.2f}%                 {rv[i]*100:>7.2f}%                 {rts[i]*100:>7.2f}%")
         
     pd.DataFrame(train, columns=["WSI"]).to_csv("train_split.csv", index=False)
     pd.DataFrame(val, columns=["WSI"]).to_csv("val_split.csv", index=False)

@@ -6,22 +6,23 @@ import javax.imageio.ImageIO
 import java.awt.image.BufferedImage
 import java.io.File
 import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.ForkJoinPool
 
 // ==============================================================================
 // 1. CONFIGURAZIONE
 // ==============================================================================
-String pathOutput = "E:/MarcoCariccia/Dataset/Dataset_Tiles"
+String pathOutput = "E:/Tirocinio/Dataset/Dataset_Tiles"
 int outputTileSize = 512       
-double downsample = 2.0        // Zoom a 40x, gold standard per cervical CAD
+double downsample = 2.0        
 
-int baseSize = (int)(outputTileSize * downsample) 
-int step = (int)(baseSize * 0.75) 
+int baseSize = (int)(outputTileSize * downsample)   // Calcola 1024
+int step = (int)(baseSize * 0.75)                   // Calcola 768 (25% di overlap)                
 
 // ==============================================================================
 // 2. MAPPATURA CLASSI E COLORI
 // ==============================================================================
 def classMapping = [
-    "Tissue"             : [id: 255, color: ColorTools.BLACK], // Tessuto sconosciuto (BLACK)
+    "Tissue"             : [id: 255, color: ColorTools.BLACK], // Tessuto generico non patologico
     "CIN1"               : [id: 1, color: ColorTools.makeRGB(255, 192, 203)], 
     "Endocervical glands": [id: 2, color: ColorTools.GREEN],                  
     "HSIL"               : [id: 3, color: ColorTools.BLUE],                   
@@ -42,48 +43,42 @@ def hierarchy = imageData.getHierarchy()
 def server = imageData.getServer()
 String cleanName = GeneralTools.stripExtension(getProjectEntry().getImageName())
 
-print "\n--- Elaborazione WSI: ${cleanName} ---"
+print "\n======================================================="
+print "--- Elaborazione WSI: ${cleanName} ---"
 
 int blackColor = 0xFF000000.intValue() 
 int whiteColor = 0xFFFFFFFF.intValue() 
 
 // ==============================================================================
-// 4. RILEVAMENTO TESSUTO (CON DIAGNOSTICA)
+// 4. CONTROLLO TESSUTO MANUALE (ZERO COLLI DI BOTTIGLIA)
 // ==============================================================================
-try {
-    def tissueClass = getPathClass("Tissue")
-    def oldTissue = hierarchy.getAnnotationObjects().findAll { it.getPathClass() == tissueClass }
-    removeObjects(oldTissue, true)
+def tissueClass = getPathClass("Tissue")
+def existingTissue = hierarchy.getAnnotationObjects().findAll { it.getPathClass() == tissueClass }
 
-    // Filtro abbassato a 10.0 per impedire a QuPath di cancellare il tessuto
-    createAnnotationsFromPixelClassifier("Rilevatore_Tessuto", 10.0, 10.0)
-    
-    // --- DIAGNOSTICA ---
-    def newTissue = hierarchy.getAnnotationObjects().findAll { it.getPathClass() == tissueClass }
-    print " -> DIAGNOSTICA: Generate ${newTissue.size()} aree di 'Tissue' bianco."
-    
-    if (newTissue.isEmpty()) {
-        print " ❌ ERRORE CRITICO: Il Rilevatore non sta creando nulla! Le maschere non avranno il bianco."
-    }
-
-    resolveHierarchy() 
-} catch (Exception e) {
-    print "ATTENZIONE: Classificatore 'Rilevatore_Tessuto' fallito per ${cleanName}."
-    return
+if (existingTissue.isEmpty()) {
+    print " ❌ DA FARE A MANO: Nessuna annotazione 'Tissue' trovata! Salto questa WSI."
+    return // Esce e passa alla prossima WSI per non estrarre tile sbagliati
+} else {
+    print " ✅ DIAGNOSTICA: Trovate ${existingTissue.size()} annotazioni 'Tissue' (Fatte a mano)."
 }
 
+resolveHierarchy() 
+
+// ==============================================================================
+// 5. CONTROLLO ANNOTAZIONI PATOLOGICHE
+// ==============================================================================
 def targetClasses = ["CIN1", "Endocervical glands", "HSIL", "Normal Mucosa", "Stroma"]
 def targetAnnotations = hierarchy.getAnnotationObjects().findAll { 
     it.getPathClass() != null && targetClasses.contains(it.getPathClass().getName()) 
 }
 
 if (targetAnnotations.isEmpty()) {
-    print "Nessuna annotazione patologica trovata. Salto."
+    print "Nessuna annotazione patologica (Ground Truth) trovata. Salto alla prossima WSI."
     return
 }
 
 // ==============================================================================
-// 5. SETUP GESTIONE FILE E FORZATURA MASCHERA
+// 6. SETUP GESTIONE FILE E MASCHERE
 // ==============================================================================
 def labelBuilder = new LabeledImageServer.Builder(imageData)
     .backgroundLabel(0, ColorTools.WHITE) 
@@ -103,7 +98,7 @@ if (!imgDir.exists()) imgDir.mkdirs()
 if (!maskDir.exists()) maskDir.mkdirs()
 
 // ==============================================================================
-// 6. ESTRAZIONE TILE MULTI-CORE 
+// 7. ESTRAZIONE TILE (MULTI-THREADING CONTROLLATO A 4 CORE)
 // ==============================================================================
 double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE, maxX = 0, maxY = 0
 for (a in targetAnnotations) {
@@ -122,16 +117,34 @@ for (int y = (int)minY; y < maxY - baseSize; y += step) {
 }
 
 AtomicInteger totalTilesSaved = new AtomicInteger(0)
+AtomicInteger totalRequestsProcessed = new AtomicInteger(0)
 
-requests.parallelStream().forEach { req ->
-    int x = req.x
-    int y = req.y
-    def region = RegionRequest.createInstance(server.getPath(), downsample, x, y, baseSize, baseSize)
-    
-    BufferedImage maskImg = null
-    try { maskImg = labelServer.readBufferedImage(region) } catch (Exception e) { return }
-    
-    int[] maskPixels = maskImg.getRGB(0, 0, outputTileSize, outputTileSize, null, 0, outputTileSize)
+print " -> Calcolo griglia completato. Inizio scansione di ${requests.size()} potenziali tile in parallelo (4 Core)..."
+
+def customThreadPool = new ForkJoinPool(4)
+
+customThreadPool.submit({
+    requests.parallelStream().forEach { req ->
+        
+        int processed = totalRequestsProcessed.incrementAndGet()
+        
+        if (processed % 500 == 0) {
+            print "    [IN CORSO] Analizzati ${processed}/${requests.size()} tile... (Salvati finora: ${totalTilesSaved.get()})"
+        }
+
+        int x = req.x
+        int y = req.y
+        def region = RegionRequest.createInstance(server.getPath(), downsample, x, y, baseSize, baseSize)
+        
+        BufferedImage maskImg = null
+        try { 
+            maskImg = labelServer.readBufferedImage(region) 
+        } catch (Exception e) { 
+            return 
+        }
+        
+        int w = maskImg.getWidth(), h = maskImg.getHeight()
+        int[] maskPixels = maskImg.getRGB(0, 0, w, h, null, 0, w)
         int pixelUtili = 0
         
         for (int p : maskPixels) {
@@ -142,16 +155,27 @@ requests.parallelStream().forEach { req ->
         
         double percentualeTessuto = (double) pixelUtili / maskPixels.length
         
-        if (percentualeTessuto < 0.05) return
-    
-    try {
-        BufferedImage rgbImg = server.readBufferedImage(region)
-        String filename = "tile_x" + x + "_y" + y + ".png" 
-        ImageIO.write(rgbImg, "png", new File(imgDir, filename))
-        ImageIO.write(maskImg, "png", new File(maskDir, filename))
-        totalTilesSaved.incrementAndGet()
-    } catch (Exception e) {}
-}
+        if (percentualeTessuto < 0.0133) return
+        
+        try {
+            BufferedImage rgbImg = server.readBufferedImage(region)
+            String filename = "tile_x" + x + "_y" + y + ".png" 
+            ImageIO.write(rgbImg, "png", new File(imgDir, filename))
+            ImageIO.write(maskImg, "png", new File(maskDir, filename))
+            
+            totalTilesSaved.incrementAndGet()
+            
+        } catch (Exception e) {}
+    }
+}).get()
 
-print "    Completato! Estratti " + totalTilesSaved.get() + " tile utili."
+customThreadPool.shutdown()
+
+int scartati = requests.size() - totalTilesSaved.get()
+print "✅ COMPLETATO! WSI: ${cleanName}"
+print "   - Tile totali analizzati: ${requests.size()}"
+print "   - Tile SALVATI (utili): ${totalTilesSaved.get()}"
+print "   - Tile SCARTATI (<1.33% patologia o vuoti): ${scartati}"
+print "=======================================================\n"
+
 System.gc()

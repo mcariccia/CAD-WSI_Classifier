@@ -7,7 +7,7 @@ from tqdm import tqdm
 # ==========================================
 # CONFIGURAZIONE PERCORSI
 # ==========================================
-percorso_dataset = "E:\MarcoCariccia\Dataset\Dataset_Tiles"
+percorso_dataset = "E:\Tirocinio\Dataset\Dataset_Tiles"
 output_file = "profilo_wsi.json"
 
 def profila_wsi():
