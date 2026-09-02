@@ -1,0 +1,8 @@
+vera\predetta,Sfondo,CIN1,Ghiandole,HSIL,Mucosa,Stroma,totale
+Sfondo,0,0,0,0,0,0,0
+CIN1,0,102,0,10,36,1,149
+Ghiandole,6,0,278,4,1,5,294
+HSIL,0,17,12,410,12,0,451
+Mucosa,0,48,4,20,242,1,315
+Stroma,0,3,2,3,0,29,37
+totale,6,170,296,447,291,36,1246

@@ -1,0 +1,113 @@
+{
+  "obiettivo": {
+    "tipo": "MSE sulla quota di pixel per classe",
+    "classi": [
+      "CIN1",
+      "Ghiandole",
+      "HSIL",
+      "Mucosa"
+    ],
+    "target": 0.2,
+    "escluse": {
+      "Sfondo": "vetro, non e' un'annotazione diagnostica",
+      "Stroma": "target irraggiungibile, vincolato con un tetto"
+    }
+  },
+  "vincoli": {
+    "n_test": 8,
+    "soglia_presenza": 0.005,
+    "wsi_minime_train_default": 10,
+    "deroghe_wsi_minime": {},
+    "classi_da_validare": [
+      "CIN1",
+      "Ghiandole",
+      "HSIL",
+      "Mucosa",
+      "Stroma"
+    ],
+    "presenza_minima_test": {
+      "CIN1": 2,
+      "Ghiandole": 3,
+      "HSIL": 3,
+      "Mucosa": 3,
+      "Stroma": 1
+    },
+    "pixel_minimi_test": {
+      "CIN1": 5000000,
+      "HSIL": 10000000,
+      "Mucosa": 5000000,
+      "Ghiandole": 2000000
+    },
+    "min_wsi_negative_test": 1,
+    "min_wsi_interfaccia_test": 3,
+    "max_dominanza_test": 0.35,
+    "max_quota_stroma": 0.25,
+    "wsi_forzate_train": [],
+    "cooccorrenza_forzata_train": [
+      "Prova 18"
+    ]
+  },
+  "selezione": {
+    "dim_rosa": 500,
+    "tolleranza": 1.15,
+    "criteri_secondari": [
+      "dominanza minima",
+      "copertura di classe massima",
+      "MSE minimo"
+    ]
+  },
+  "risultato": {
+    "train": [
+      "Prova 1",
+      "Prova 2",
+      "Prova 3",
+      "Prova 4",
+      "Prova 6",
+      "Prova 7",
+      "Prova 8",
+      "Prova 9",
+      "Prova 11",
+      "Prova 12",
+      "Prova 13",
+      "Prova 14",
+      "Prova 15",
+      "Prova 16",
+      "Prova 18",
+      "Prova 19",
+      "Prova 20",
+      "Prova 21",
+      "Prova 23",
+      "Prova 40",
+      "Prova 45",
+      "Prova 46",
+      "Prova 48",
+      "Prova 49",
+      "Prova 51",
+      "Prova 52",
+      "Prova 53",
+      "Prova 54",
+      "Prova 55",
+      "Prova 56",
+      "Prova 58",
+      "Prova 59"
+    ],
+    "test": [
+      "Prova 5",
+      "Prova 10",
+      "Prova 17",
+      "Prova 44",
+      "Prova 47",
+      "Prova 50",
+      "Prova 57",
+      "Prova 60"
+    ],
+    "mse": 0.002755446012485746,
+    "partizioni_ammissibili": 521819,
+    "partizioni_equivalenti": 18
+  },
+  "limiti": {
+    "leakage_paziente": false,
+    "nota": "Senza mappa vetrino->paziente non e' possibile escludere che vetrini dello stesso paziente cadano su lati opposti della partizione."
+  },
+  "hash_configurazione": "1deeb3c9a04aa3fb"
+}
