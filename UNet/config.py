@@ -16,8 +16,8 @@ import torch
 USA_HED = True
 P_HED = 0.80
 
-K_INTENSITA    = 3.0     # amplificazione massima delle concentrazioni H&E
-K_ATTENUAZIONE = 1.6     # attenuazione massima (fattore minimo = 1/K_ATT) 1.6 se K_INTENSITA >= 2.0, 1.4 se K_INTENSITA < 2.0
+K_INTENSITA    = 1.4     # [1.4, 2.0, 3.0] da testare
+K_ATTENUAZIONE = 1.4     # attenuazione massima (fattore minimo = 1/K_ATT) 1.6 se K_INTENSITA >= 2.0, 1.4 se K_INTENSITA < 2.0
 K_RAPPORTO     = 1.3     # sbilanciamento fra ematossilina ed eosina
 BIAS_REL       = 0.02
 SCALA_H        = 1.02
