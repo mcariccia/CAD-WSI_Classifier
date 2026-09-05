@@ -16,8 +16,8 @@ import torch
 USA_HED = True
 P_HED = 0.80
 
-K_INTENSITA    = 3.0     # amplificazione massima delle concentrazioni H&E
-K_ATTENUAZIONE = 1.6     # attenuazione massima (fattore minimo = 1/K_ATT) 1.6 se K_INTENSITA >= 2.0, 1.4 se K_INTENSITA < 2.0
+K_INTENSITA    = 1.4     # amplificazione massima delle concentrazioni H&E
+K_ATTENUAZIONE = 1.4     # attenuazione massima (fattore minimo = 1/K_ATT) 1.6 se K_INTENSITA >= 2.0, 1.4 se K_INTENSITA < 2.0
 K_RAPPORTO     = 1.3     # sbilanciamento fra ematossilina ed eosina
 BIAS_REL       = 0.02
 SCALA_H        = 1.02
@@ -128,8 +128,8 @@ DROPOUT_HEAD = 0.15
 STAGE_SCHEDULE = {0: 0, 5: 1}
 FRAZIONE_SBLOCCO = 0.50
 
-TILE = 512
-BATCH_SIZE = 16
+TILE = 768
+BATCH_SIZE = 12
 NUM_WORKERS = 4
 EPOCHS = 30
 WARMUP_EP = 2

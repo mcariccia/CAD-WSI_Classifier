@@ -1,0 +1,3 @@
+configurazione;decisione;n_pazienti;n_roi;n_tile;sens_HSIL;sens_HSIL_IC95;spec;spec_su_tessuto;spec_su_tessuto_IC95;recall_NEGATIVE;recall_LSIL;mIoU_3cl;mIoU_3cl_IC95;NC_mIoU;quota_pred_vetro;px_valutati_M
+vahadane_si_k3;argmax;19;20;694;0.9320;[0.881,0.944];0.5387;0.5153;[0.368,0.737];0.6482;0.0305;0.3812;[0.231,0.465];0.6255;0.0451;71.5
+vahadane_si_k3;costo_minimo;19;20;694;0.9552;[0.904,0.967];0.4894;0.4744;[0.314,0.707];0.3551;0.1096;0.3375;[0.205,0.418];0.5303;0.0267;71.5

@@ -1,0 +1,260 @@
+{
+  "riepilogo": {
+    "vahadane_no_k2": {
+      "sens_hsil": 0.9337926919957221,
+      "spec_tessuto": 0.4322656628231292,
+      "miou": 0.38636507645129897,
+      "recall_lsil": 0.02362890711620296,
+      "quota_vetro": 0.0454197441141577,
+      "ic": {
+        "sens_hsil": [
+          0.8709984232204008,
+          0.9499023839319589
+        ],
+        "spec_hsil": [
+          0.27252728655091396,
+          0.7188372496375895
+        ],
+        "spec_tessuto": [
+          0.24568523273563736,
+          0.6969443922973441
+        ],
+        "miou": [
+          0.24215040610980715,
+          0.4703275948178254
+        ]
+      }
+    },
+    "vahadane_si_k2": {
+      "sens_hsil": 0.9343656325973377,
+      "spec_tessuto": 0.47184708228755,
+      "miou": 0.3991884846436546,
+      "recall_lsil": 0.021384319714561166,
+      "quota_vetro": 0.03814351691155661,
+      "ic": {
+        "sens_hsil": [
+          0.884065934522258,
+          0.9464531109699592
+        ],
+        "spec_hsil": [
+          0.3030513263536507,
+          0.7548869597615775
+        ],
+        "spec_tessuto": [
+          0.28204756405467185,
+          0.7424495332254445
+        ],
+        "miou": [
+          0.25337619011358725,
+          0.4828646369833021
+        ]
+      }
+    },
+    "vahadane_no_k3": {
+      "sens_hsil": 0.9305132444690466,
+      "spec_tessuto": 0.4676064951896173,
+      "miou": 0.3781121127342306,
+      "recall_lsil": 0.061205117337556514,
+      "quota_vetro": 0.05065001821126125,
+      "ic": {
+        "sens_hsil": [
+          0.8752452216037765,
+          0.9443415385805972
+        ],
+        "spec_hsil": [
+          0.3489706855054737,
+          0.7126539243731305
+        ],
+        "spec_tessuto": [
+          0.3229992229978897,
+          0.6861747734781423
+        ],
+        "miou": [
+          0.23360297850014386,
+          0.46132425925924264
+        ]
+      }
+    },
+    "vahadane_si_k3": {
+      "sens_hsil": 0.9320418814003244,
+      "spec_tessuto": 0.5152995477568484,
+      "miou": 0.3812363365893116,
+      "recall_lsil": 0.030450725065776688,
+      "quota_vetro": 0.04510989037539138,
+      "ic": {
+        "sens_hsil": [
+          0.8806715464256473,
+          0.9443388265573454
+        ],
+        "spec_hsil": [
+          0.39108932856493506,
+          0.753643203979007
+        ],
+        "spec_tessuto": [
+          0.3677226039404439,
+          0.7374505212993031
+        ],
+        "miou": [
+          0.23110570171911707,
+          0.4646682366396163
+        ]
+      }
+    }
+  },
+  "righe": [
+    {
+      "configurazione": "vahadane_no_k2",
+      "decisione": "argmax",
+      "n_pazienti": 19,
+      "n_roi": 20,
+      "n_tile": 694,
+      "sens_HSIL": "0.9338",
+      "sens_HSIL_IC95": "[0.871,0.950]",
+      "spec": "0.4585",
+      "spec_su_tessuto": "0.4323",
+      "spec_su_tessuto_IC95": "[0.246,0.697]",
+      "recall_NEGATIVE": "0.6698",
+      "recall_LSIL": "0.0236",
+      "mIoU_3cl": "0.3864",
+      "mIoU_3cl_IC95": "[0.242,0.470]",
+      "NC_mIoU": "0.6685",
+      "quota_pred_vetro": "0.0454",
+      "px_valutati_M": "71.5"
+    },
+    {
+      "configurazione": "vahadane_no_k2",
+      "decisione": "costo_minimo",
+      "n_pazienti": 19,
+      "n_roi": 20,
+      "n_tile": 694,
+      "sens_HSIL": "0.9581",
+      "sens_HSIL_IC95": "[0.903,0.971]",
+      "spec": "0.4059",
+      "spec_su_tessuto": "0.3911",
+      "spec_su_tessuto_IC95": "[0.209,0.654]",
+      "recall_NEGATIVE": "0.4334",
+      "recall_LSIL": "0.0725",
+      "mIoU_3cl": "0.3495",
+      "mIoU_3cl_IC95": "[0.206,0.451]",
+      "NC_mIoU": "0.5915",
+      "quota_pred_vetro": "0.0251",
+      "px_valutati_M": "71.5"
+    },
+    {
+      "configurazione": "vahadane_si_k2",
+      "decisione": "argmax",
+      "n_pazienti": 19,
+      "n_roi": 20,
+      "n_tile": 694,
+      "sens_HSIL": "0.9344",
+      "sens_HSIL_IC95": "[0.884,0.946]",
+      "spec": "0.4914",
+      "spec_su_tessuto": "0.4718",
+      "spec_su_tessuto_IC95": "[0.282,0.742]",
+      "recall_NEGATIVE": "0.7087",
+      "recall_LSIL": "0.0214",
+      "mIoU_3cl": "0.3992",
+      "mIoU_3cl_IC95": "[0.253,0.483]",
+      "NC_mIoU": "0.6861",
+      "quota_pred_vetro": "0.0381",
+      "px_valutati_M": "71.5"
+    },
+    {
+      "configurazione": "vahadane_si_k2",
+      "decisione": "costo_minimo",
+      "n_pazienti": 19,
+      "n_roi": 20,
+      "n_tile": 694,
+      "sens_HSIL": "0.9592",
+      "sens_HSIL_IC95": "[0.918,0.968]",
+      "spec": "0.4471",
+      "spec_su_tessuto": "0.4365",
+      "spec_su_tessuto_IC95": "[0.245,0.709]",
+      "recall_NEGATIVE": "0.4947",
+      "recall_LSIL": "0.0706",
+      "mIoU_3cl": "0.3710",
+      "mIoU_3cl_IC95": "[0.230,0.472]",
+      "NC_mIoU": "0.6220",
+      "quota_pred_vetro": "0.0202",
+      "px_valutati_M": "71.5"
+    },
+    {
+      "configurazione": "vahadane_no_k3",
+      "decisione": "argmax",
+      "n_pazienti": 19,
+      "n_roi": 20,
+      "n_tile": 694,
+      "sens_HSIL": "0.9305",
+      "sens_HSIL_IC95": "[0.875,0.944]",
+      "spec": "0.4966",
+      "spec_su_tessuto": "0.4676",
+      "spec_su_tessuto_IC95": "[0.323,0.686]",
+      "recall_NEGATIVE": "0.6047",
+      "recall_LSIL": "0.0612",
+      "mIoU_3cl": "0.3781",
+      "mIoU_3cl_IC95": "[0.234,0.461]",
+      "NC_mIoU": "0.6166",
+      "quota_pred_vetro": "0.0507",
+      "px_valutati_M": "71.5"
+    },
+    {
+      "configurazione": "vahadane_no_k3",
+      "decisione": "costo_minimo",
+      "n_pazienti": 19,
+      "n_roi": 20,
+      "n_tile": 694,
+      "sens_HSIL": "0.9562",
+      "sens_HSIL_IC95": "[0.913,0.966]",
+      "spec": "0.4424",
+      "spec_su_tessuto": "0.4222",
+      "spec_su_tessuto_IC95": "[0.263,0.655]",
+      "recall_NEGATIVE": "0.2775",
+      "recall_LSIL": "0.1182",
+      "mIoU_3cl": "0.3138",
+      "mIoU_3cl_IC95": "[0.179,0.397]",
+      "NC_mIoU": "0.4985",
+      "quota_pred_vetro": "0.0321",
+      "px_valutati_M": "71.5"
+    },
+    {
+      "configurazione": "vahadane_si_k3",
+      "decisione": "argmax",
+      "n_pazienti": 19,
+      "n_roi": 20,
+      "n_tile": 694,
+      "sens_HSIL": "0.9320",
+      "sens_HSIL_IC95": "[0.881,0.944]",
+      "spec": "0.5387",
+      "spec_su_tessuto": "0.5153",
+      "spec_su_tessuto_IC95": "[0.368,0.737]",
+      "recall_NEGATIVE": "0.6482",
+      "recall_LSIL": "0.0305",
+      "mIoU_3cl": "0.3812",
+      "mIoU_3cl_IC95": "[0.231,0.465]",
+      "NC_mIoU": "0.6255",
+      "quota_pred_vetro": "0.0451",
+      "px_valutati_M": "71.5"
+    },
+    {
+      "configurazione": "vahadane_si_k3",
+      "decisione": "costo_minimo",
+      "n_pazienti": 19,
+      "n_roi": 20,
+      "n_tile": 694,
+      "sens_HSIL": "0.9552",
+      "sens_HSIL_IC95": "[0.904,0.967]",
+      "spec": "0.4894",
+      "spec_su_tessuto": "0.4744",
+      "spec_su_tessuto_IC95": "[0.314,0.707]",
+      "recall_NEGATIVE": "0.3551",
+      "recall_LSIL": "0.1096",
+      "mIoU_3cl": "0.3375",
+      "mIoU_3cl_IC95": "[0.205,0.418]",
+      "NC_mIoU": "0.5303",
+      "quota_pred_vetro": "0.0267",
+      "px_valutati_M": "71.5"
+    }
+  ],
+  "saltate": [],
+  "firma": "MTCHI Task2 | Training+Test | tile 512 overlap 0.0 | TTA on | vetro 'negativo' | min_annot 0.0"
+}

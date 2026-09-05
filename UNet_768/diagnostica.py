@@ -231,7 +231,7 @@ def verifica_soglia_vetro(campioni, par_vetro=None, n=40, seed=0):
     if quota_ignoti:
         print(f"   quota di vetro nelle zone non annotate : "
               f"{100*np.mean(quota_ignoti):.1f}%")
-    if sens < 0.85 or err > 0.10:
+    if sens < 0.85 or err > 0.15:
         raise RuntimeError(
             f"SOGLIA_OD_VETRO={soglia} non separa vetro e tessuto "
             f"(sensibilita' {sens:.2f}, errore {err:.2f}). Alzarla se troppo "

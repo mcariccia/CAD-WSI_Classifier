@@ -1,0 +1,417 @@
+{
+  "regola": {
+    "frazione_minima": 0.05,
+    "percentili": [
+      [
+        10,
+        "difficile"
+      ],
+      [
+        50,
+        "tipico"
+      ],
+      [
+        90,
+        "riuscito"
+      ]
+    ],
+    "max_per_roi": 1,
+    "n_errori": 3,
+    "frazione_minima_errore": 0.15,
+    "n_confronti_decisione": 2
+  },
+  "scelte": [
+    {
+      "img": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1212555-1-6D\\images\\y004608_x002048.png",
+      "msk": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1212555-1-6D\\masks\\y004608_x002048.png",
+      "tile": "y004608_x002048.png",
+      "cartella": "Crop_B1212555-1-6D",
+      "paziente": "B1212555",
+      "iou": [
+        0.06168212425358913,
+        null,
+        0.0
+      ],
+      "copertura": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "confusioni": {
+        "0->1": 0.0,
+        "0->2": 0.9383178757464109
+      },
+      "pixel_annotati": 31484,
+      "percentile": 10,
+      "etichetta": "difficile",
+      "n_candidati": 208,
+      "tipo": "classe",
+      "classe": 0,
+      "iou_classe": 0.06168212425358913,
+      "file": "NEGATIVE_p10_difficile__Crop_B1212555-1-6D__y004608_x002048.png"
+    },
+    {
+      "img": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1211535-4-12D\\images\\y000512_x004608.png",
+      "msk": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1211535-4-12D\\masks\\y000512_x004608.png",
+      "tile": "y000512_x004608.png",
+      "cartella": "Crop_B1211535-4-12D",
+      "paziente": "B1211535",
+      "iou": [
+        0.6743775100401607,
+        0.0,
+        null
+      ],
+      "copertura": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "confusioni": {
+        "0->1": 0.32562248995983933,
+        "0->2": 0.0
+      },
+      "pixel_annotati": 6225,
+      "percentile": 50,
+      "etichetta": "tipico",
+      "n_candidati": 208,
+      "tipo": "classe",
+      "classe": 0,
+      "iou_classe": 0.6743775100401607,
+      "file": "NEGATIVE_p50_tipico__Crop_B1211535-4-12D__y000512_x004608.png"
+    },
+    {
+      "img": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1209085-2-9D\\images\\y004096_x003541.png",
+      "msk": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1209085-2-9D\\masks\\y004096_x003541.png",
+      "tile": "y004096_x003541.png",
+      "cartella": "Crop_B1209085-2-9D",
+      "paziente": "B1209085",
+      "iou": [
+        1.0,
+        null,
+        null
+      ],
+      "copertura": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "confusioni": {
+        "0->1": 0.0,
+        "0->2": 0.0
+      },
+      "pixel_annotati": 57465,
+      "percentile": 90,
+      "etichetta": "riuscito",
+      "n_candidati": 208,
+      "tipo": "classe",
+      "classe": 0,
+      "iou_classe": 1.0,
+      "file": "NEGATIVE_p90_riuscito__Crop_B1209085-2-9D__y004096_x003541.png"
+    },
+    {
+      "img": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1214638-1-3D\\images\\y000000_x005030.png",
+      "msk": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1214638-1-3D\\masks\\y000000_x005030.png",
+      "tile": "y000000_x005030.png",
+      "cartella": "Crop_B1214638-1-3D",
+      "paziente": "B1214638",
+      "iou": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "copertura": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "confusioni": {
+        "1->0": 0.05107787919984463,
+        "1->2": 0.9489221208001554
+      },
+      "pixel_annotati": 25745,
+      "percentile": 10,
+      "etichetta": "difficile",
+      "n_candidati": 164,
+      "tipo": "classe",
+      "classe": 1,
+      "iou_classe": 0.0,
+      "file": "LSIL_p10_difficile__Crop_B1214638-1-3D__y000000_x005030.png"
+    },
+    {
+      "img": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1216378-1-1D\\images\\y004096_x000512.png",
+      "msk": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1216378-1-1D\\masks\\y004096_x000512.png",
+      "tile": "y004096_x000512.png",
+      "cartella": "Crop_B1216378-1-1D",
+      "paziente": "B1216378",
+      "iou": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "copertura": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "confusioni": {
+        "1->0": 0.048065185546875,
+        "1->2": 0.951934814453125
+      },
+      "pixel_annotati": 262144,
+      "percentile": 50,
+      "etichetta": "tipico",
+      "n_candidati": 164,
+      "tipo": "classe",
+      "classe": 1,
+      "iou_classe": 0.0,
+      "file": "LSIL_p50_tipico__Crop_B1216378-1-1D__y004096_x000512.png"
+    },
+    {
+      "img": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1221216-1-2D\\images\\y001536_x001536.png",
+      "msk": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1221216-1-2D\\masks\\y001536_x001536.png",
+      "tile": "y001536_x001536.png",
+      "cartella": "Crop_B1221216-1-2D",
+      "paziente": "B1221216",
+      "iou": [
+        0.0,
+        0.790847681446493,
+        0.0
+      ],
+      "copertura": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "confusioni": {
+        "1->0": 0.06003352125552339,
+        "1->2": 0.14911879729798364
+      },
+      "pixel_annotati": 19689,
+      "percentile": 90,
+      "etichetta": "riuscito",
+      "n_candidati": 164,
+      "tipo": "classe",
+      "classe": 1,
+      "iou_classe": 0.790847681446493,
+      "file": "LSIL_p90_riuscito__Crop_B1221216-1-2D__y001536_x001536.png"
+    },
+    {
+      "img": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1215207-2-5D\\images\\y001024_x000000.png",
+      "msk": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1215207-2-5D\\masks\\y001024_x000000.png",
+      "tile": "y001024_x000000.png",
+      "cartella": "Crop_B1215207-2-5D",
+      "paziente": "B1215207",
+      "iou": [
+        0.0,
+        0.0,
+        0.09921807124239791
+      ],
+      "copertura": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "confusioni": {
+        "2->0": 0.12302345786272806,
+        "2->1": 0.777758470894874
+      },
+      "pixel_annotati": 5755,
+      "percentile": 10,
+      "etichetta": "difficile",
+      "n_candidati": 326,
+      "tipo": "classe",
+      "classe": 2,
+      "iou_classe": 0.09921807124239791,
+      "file": "HSIL_p10_difficile__Crop_B1215207-2-5D__y001024_x000000.png"
+    },
+    {
+      "img": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1220933-4-9D\\images\\y004096_x005120.png",
+      "msk": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1220933-4-9D\\masks\\y004096_x005120.png",
+      "tile": "y004096_x005120.png",
+      "cartella": "Crop_B1220933-4-9D",
+      "paziente": "B1220933",
+      "iou": [
+        0.0,
+        null,
+        0.9382118961066329
+      ],
+      "copertura": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "confusioni": {
+        "2->0": 0.06178810389336705,
+        "2->1": 0.0
+      },
+      "pixel_annotati": 189810,
+      "percentile": 50,
+      "etichetta": "tipico",
+      "n_candidati": 326,
+      "tipo": "classe",
+      "classe": 2,
+      "iou_classe": 0.9382118961066329,
+      "file": "HSIL_p50_tipico__Crop_B1220933-4-9D__y004096_x005120.png"
+    },
+    {
+      "img": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1208929-4-8D\\images\\y002048_x001024.png",
+      "msk": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1208929-4-8D\\masks\\y002048_x001024.png",
+      "tile": "y002048_x001024.png",
+      "cartella": "Crop_B1208929-4-8D",
+      "paziente": "B1208929",
+      "iou": [
+        0.0,
+        null,
+        0.992411564733247
+      ],
+      "copertura": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "confusioni": {
+        "2->0": 0.0075884352667529706,
+        "2->1": 0.0
+      },
+      "pixel_annotati": 190026,
+      "percentile": 90,
+      "etichetta": "riuscito",
+      "n_candidati": 326,
+      "tipo": "classe",
+      "classe": 2,
+      "iou_classe": 0.992411564733247,
+      "file": "HSIL_p90_riuscito__Crop_B1208929-4-8D__y002048_x001024.png"
+    },
+    {
+      "img": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1216378-1-1D\\images\\y002048_x001024.png",
+      "msk": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1216378-1-1D\\masks\\y002048_x001024.png",
+      "tile": "y002048_x001024.png",
+      "cartella": "Crop_B1216378-1-1D",
+      "paziente": "B1216378",
+      "iou": [
+        null,
+        0.0,
+        0.0
+      ],
+      "copertura": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "confusioni": {
+        "1->0": 0.0,
+        "1->2": 1.0
+      },
+      "pixel_annotati": 262144,
+      "tipo": "errore",
+      "classe": 1,
+      "predetta": 2,
+      "quota": 1.0,
+      "file": "errore_LSIL_verso_HSIL__Crop_B1216378-1-1D__y002048_x001024.png"
+    },
+    {
+      "img": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1204944-3-7D\\images\\y000512_x001024.png",
+      "msk": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1204944-3-7D\\masks\\y000512_x001024.png",
+      "tile": "y000512_x001024.png",
+      "cartella": "Crop_B1204944-3-7D",
+      "paziente": "B1204944",
+      "iou": [
+        0.00029014056546869155,
+        null,
+        0.0
+      ],
+      "copertura": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "confusioni": {
+        "0->1": 0.0,
+        "0->2": 0.9997098594345313
+      },
+      "pixel_annotati": 261942,
+      "tipo": "errore",
+      "classe": 0,
+      "predetta": 2,
+      "quota": 0.9997098594345313,
+      "file": "errore_NEGATIVE_verso_HSIL__Crop_B1204944-3-7D__y000512_x001024.png"
+    },
+    {
+      "img": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1215515-2-4D\\images\\y001536_x000000.png",
+      "msk": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1215515-2-4D\\masks\\y001536_x000000.png",
+      "tile": "y001536_x000000.png",
+      "cartella": "Crop_B1215515-2-4D",
+      "paziente": "B1215515",
+      "iou": [
+        0.0,
+        0.0,
+        null
+      ],
+      "copertura": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "confusioni": {
+        "1->0": 1.0,
+        "1->2": 0.0
+      },
+      "pixel_annotati": 145510,
+      "tipo": "errore",
+      "classe": 1,
+      "predetta": 0,
+      "quota": 1.0,
+      "file": "errore_LSIL_verso_NEGATIVE__Crop_B1215515-2-4D__y001536_x000000.png"
+    },
+    {
+      "img": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1212555-1-6D\\images\\y002560_x003072.png",
+      "msk": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1212555-1-6D\\masks\\y002560_x003072.png",
+      "tile": "y002560_x003072.png",
+      "cartella": "Crop_B1212555-1-6D",
+      "paziente": "B1212555",
+      "iou": [
+        0.973666209121014,
+        0.0,
+        null
+      ],
+      "copertura": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "confusioni": {
+        "0->1": 0.02633379087898597,
+        "0->2": 0.0
+      },
+      "pixel_annotati": 220743,
+      "tipo": "decisione",
+      "quota": 0.8006248474121094,
+      "file": "decisione__Crop_B1212555-1-6D__y002560_x003072.png"
+    },
+    {
+      "img": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1212555-1-6D\\images\\y002560_x003090.png",
+      "msk": "E:\\Tirocinio\\Dataset\\Dataset_Tiles_MTCHI\\Crop_B1212555-1-6D\\masks\\y002560_x003090.png",
+      "tile": "y002560_x003090.png",
+      "cartella": "Crop_B1212555-1-6D",
+      "paziente": "B1212555",
+      "iou": [
+        0.7694214876033058,
+        0.0,
+        null
+      ],
+      "copertura": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "confusioni": {
+        "0->1": 0.23057851239669422,
+        "0->2": 0.0
+      },
+      "pixel_annotati": 1210,
+      "tipo": "decisione",
+      "quota": 0.7242393493652344,
+      "file": "decisione__Crop_B1212555-1-6D__y002560_x003090.png"
+    }
+  ]
+}
